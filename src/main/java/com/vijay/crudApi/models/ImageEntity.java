@@ -16,6 +16,7 @@ public class ImageEntity {
     private Long id;
     
     @Lob
+    @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;
     
     
