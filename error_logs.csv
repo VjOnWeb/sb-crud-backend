@@ -1,0 +1,5 @@
+ID,ClassName,ErrorCode,ErrorMessage,AffectedKey,AffectedValue,OccurrenceCount,CreatedAt
+1,JwtUtil,JWT_EXPIRED,JWT expired at 2025-07-19T22:51:08Z. Current time: 2025-07-20T01:23:55Z  a difference of 9167963 milliseconds.  Allowed clock skew: 0 milliseconds.,token,eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6InZpamF5YW5hbmR2ajE5OThAZ21haWwuY29tIiwic3ViIjoidmlqYXlhbmFuZHZqMTk5OEBnbWFpbC5jb20iLCJpYXQiOjE3NTI5Mjk0NjgsImV4cCI6MTc1Mjk2NTQ2OH0.qMvoYaRJiuTfIJZK59Brra8pU5hCuoJ1jMndYRq820Q,3,2025-07-20 06:55:24.0
+2,UserContollerApi,FETCH_USERS,Fetched user list,Count,6,4,2025-07-20 06:58:30.0
+3,UserContollerApi,CREATE_USER,User created,FirstName,Vijay Anand,2,2025-07-20 06:57:15.0
+4,UserContollerApi,DELETE_USER,User deleted,ID,12,1,2025-07-20 06:58:30.0
