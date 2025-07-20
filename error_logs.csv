@@ -1,10 +1,3 @@
 ID,ClassName,ErrorCode,ErrorMessage,AffectedKey,AffectedValue,OccurrenceCount,CreatedAt
-2,UserContollerApi,FETCH_USERS,Fetched user list,Count,6,13,2025-07-20 12:58:30.0
-3,UserContollerApi,CREATE_USER,User created,FirstName,Vijay Anand,3,2025-07-20 12:55:28.0
-4,UserContollerApi,DELETE_USER,User deleted,ID,12,2,2025-07-20 12:56:42.0
-5,UserContollerApi,UPDATE_USER_FAIL,User not found,ID,1,2,2025-07-20 12:53:00.0
-6,JwtUtil,JWT_INVALID,JWT strings must contain exactly 2 period characters. Found: 0,token,bXlzZWN1cmVsb25nc2VjcmV0a2V5Zm9yand0dG9rZW52YWxpZGF0aW9uMTIzNDU2,2,2025-07-20 12:57:14.0
-7,UserContollerApi,UPDATE_USER,User updated,ID,18,1,2025-07-20 12:56:17.0
-8,ImageController,FETCH_ALL_IMAGES,Fetched all images,Count,6,1,2025-07-20 13:02:58.0
-9,NoteController,FETCH_NOTES,Fetched all notes,Count,4,2,2025-07-20 13:03:48.0
-10,NoteController,SAVE_NOTE,Saved or updated note,ID,11,1,2025-07-20 13:03:42.0
+2,UserContollerApi,FETCH_USERS,Fetched user list,Count,6,16,2025-07-20 18:18:17.0
+9,NoteController,FETCH_NOTES,Fetched all notes,Count,4,5,2025-07-20 18:16:50.0

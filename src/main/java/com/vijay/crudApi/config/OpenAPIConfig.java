@@ -22,3 +22,5 @@ public class OpenAPIConfig {
                     .url("https://github.com/VjOnWeb")));
     }
 }
+
+// http://localhost:9898/swagger-ui.html
