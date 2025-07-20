@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.vijay.crudApi.Repo.ErrorLogService;
 import com.vijay.crudApi.models.AppUsers;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -29,8 +30,9 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+    private final Dotenv dotenv = Dotenv.load(); // .env loader
 
-    private final String SECRET_KEY = "bXlzZWN1cmVsb25nc2VjcmV0a2V5Zm9yand0dG9rZW52YWxpZGF0aW9uMTIzNDU2";
+    private final String SECRET_KEY =  dotenv.get("JWT_SECRET");
 
     @Autowired
     private ErrorLogService errorLogService;

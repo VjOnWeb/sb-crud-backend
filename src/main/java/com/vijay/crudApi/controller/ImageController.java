@@ -1,138 +1,171 @@
 package com.vijay.crudApi.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vijay.crudApi.Repo.ImageRepository;
+import com.vijay.crudApi.Repo.ErrorLogService;
 import com.vijay.crudApi.models.ImageEntity;
 import com.vijay.crudApi.models.ImagesDTO;
 
 @RestController
 @CrossOrigin("http://localhost:3838")
 @RequestMapping("/api/images")
-//@CrossOrigin(origins = "*") // <-- This enables frontend communication for all dev ports
-
 public class ImageController {
 
-  @Autowired
-  private ImageRepository imageRepository;
+    private static final Logger log = LoggerFactory.getLogger(ImageController.class);
 
-  @PostMapping("/uploadImage")
-  public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
-    // Your upload logic here
-    try {
-      // Convert the MultipartFile to a byte array
-      byte[] imageData = file.getBytes();
+    @Autowired
+    private ImageRepository imageRepository;
 
-      // Save the image data to the MySQL database
-      ImageEntity imageEntity = new ImageEntity();
-      imageEntity.setImageData(imageData);
-      imageRepository.save(imageEntity);
+    @Autowired
+    private ErrorLogService errorLogService;
 
-      return ResponseEntity.ok("Image uploaded successfully!");
-    } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
+    @PostMapping("/uploadImage")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            byte[] imageData = file.getBytes();
+            ImageEntity imageEntity = new ImageEntity();
+            imageEntity.setImageData(imageData);
+            imageRepository.save(imageEntity);
+
+            log.info("Image uploaded successfully");
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "UPLOAD_IMAGE",
+                "Image uploaded",
+                Map.of("Size", String.valueOf(imageData.length))
+            );
+
+            return ResponseEntity.ok("Image uploaded successfully!");
+        } catch (IOException e) {
+            log.error("Failed to upload image", e);
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "UPLOAD_IMAGE_FAIL",
+                "Failed to upload image",
+                Map.of("Error", e.getMessage())
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
+        }
     }
-  }
 
-  @SuppressWarnings("null")
+    @GetMapping("/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        Optional<ImageEntity> imageEntityOptional = imageRepository.findById(id);
+        if (imageEntityOptional.isPresent()) {
+            byte[] imageData = imageEntityOptional.get().getImageData();
 
-  @GetMapping("/{id}")
-  public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-    Optional<ImageEntity> imageEntityOptional = imageRepository.findById(id);
-    if (imageEntityOptional.isPresent()) {
-      // Retrieve image data from the MySQL database
-      byte[] imageData = imageEntityOptional.get().getImageData();
+            log.info("Fetched image with ID {}", id);
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "FETCH_IMAGE",
+                "Fetched image",
+                Map.of("ID", String.valueOf(id))
+            );
 
-      // Return the image data in the response
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.IMAGE_JPEG); // Set the appropriate content type
-      return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
-    } else {
-      return ResponseEntity.notFound().build();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+        } else {
+            log.warn("Image not found with ID {}", id);
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "FETCH_IMAGE_FAIL",
+                "Image not found",
+                Map.of("ID", String.valueOf(id))
+            );
+            return ResponseEntity.notFound().build();
+        }
     }
-  }
-//
-//  @GetMapping(value = "/all_images", produces = MediaType.APPLICATION_JSON_VALUE)
-//  public ResponseEntity<List<ImagesDTO>> getAllImages() {
-//    try {
-//      List<ImageEntity> images = imageRepository.findAll();
-//
-//      // Convert ImageEntity to ImageResponse containing ID and base64 data
-//      List<ImagesDTO> imageResponses = images.stream()
-//          .map(imageEntity -> new ImagesDTO(imageEntity.getId(),
-//              Base64.getEncoder().encodeToString(imageEntity.getImageData())))
-//          .collect(Collectors.toList());
-//      System.out.println("imageResponses Data and ID " + imageResponses);
-//      return new ResponseEntity<>(imageResponses, HttpStatus.OK);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-//    }
-//  }
 
-  
+    @GetMapping(value = "/all_images", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ImagesDTO>> getAllImages() {
+        try {
+            List<ImageEntity> images = imageRepository.findAll();
+            List<ImagesDTO> imageResponses = images.stream()
+                .map(imageEntity -> new ImagesDTO(
+                    imageEntity.getId(),
+                    Base64.getEncoder().encodeToString(imageEntity.getImageData())))
+                .collect(Collectors.toList());
 
-@GetMapping(value = "/all_images", produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<List<ImagesDTO>> getAllImages() {
-    try {
-        List<ImageEntity> images = imageRepository.findAll();
+            log.info("Fetched all images, count={}", imageResponses.size());
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "FETCH_ALL_IMAGES",
+                "Fetched all images",
+                Map.of("Count", String.valueOf(imageResponses.size()))
+            );
 
-        // Convert ImageEntity to ImagesDTO, with base64 encoding of the image data
-        List<ImagesDTO> imageResponses = images.stream()
-            .map(imageEntity -> new ImagesDTO(
-                imageEntity.getId(),
-                Base64.getEncoder().encodeToString(imageEntity.getImageData()) // Base64 encoding of image data
-            ))
-            .collect(Collectors.toList());
-
-        return new ResponseEntity<>(imageResponses, HttpStatus.OK);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            return new ResponseEntity<>(imageResponses, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Failed to fetch all images", e);
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "FETCH_ALL_IMAGES_FAIL",
+                "Failed to fetch all images",
+                Map.of("Error", e.getMessage())
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
-}
 
-
-  
-  @SuppressWarnings("null")
-  
-  
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteImage(@PathVariable Long id) {
-    try {
-      // Check if the image exists
-      Optional<ImageEntity> imageEntityOptional = imageRepository.findById(id);
-      if (imageEntityOptional.isPresent()) {
-        // Delete the image from the MySQL database
-        imageRepository.deleteById(id);
-        return ResponseEntity.ok("Image deleted successfully!");
-      } else {
-        return ResponseEntity.notFound().build();
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete image.");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteImage(@PathVariable Long id) {
+        try {
+            Optional<ImageEntity> imageEntityOptional = imageRepository.findById(id);
+            if (imageEntityOptional.isPresent()) {
+                imageRepository.deleteById(id);
+                log.info("Deleted image with ID {}", id);
+                errorLogService.logError(
+                    new Timestamp(System.currentTimeMillis()),
+                    "ImageController",
+                    "DELETE_IMAGE",
+                    "Image deleted",
+                    Map.of("ID", String.valueOf(id))
+                );
+                return ResponseEntity.ok("Image deleted successfully!");
+            } else {
+                log.warn("Image not found with ID {}", id);
+                errorLogService.logError(
+                    new Timestamp(System.currentTimeMillis()),
+                    "ImageController",
+                    "DELETE_IMAGE_FAIL",
+                    "Image not found",
+                    Map.of("ID", String.valueOf(id))
+                );
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            log.error("Failed to delete image with ID {}", id, e);
+            errorLogService.logError(
+                new Timestamp(System.currentTimeMillis()),
+                "ImageController",
+                "DELETE_IMAGE_ERROR",
+                "Exception while deleting image",
+                Map.of("ID", String.valueOf(id), "Error", e.getMessage())
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete image.");
+        }
     }
-  }
 }

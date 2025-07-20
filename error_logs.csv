@@ -1,5 +1,10 @@
 ID,ClassName,ErrorCode,ErrorMessage,AffectedKey,AffectedValue,OccurrenceCount,CreatedAt
-1,JwtUtil,JWT_EXPIRED,JWT expired at 2025-07-19T22:51:08Z. Current time: 2025-07-20T01:23:55Z  a difference of 9167963 milliseconds.  Allowed clock skew: 0 milliseconds.,token,eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6InZpamF5YW5hbmR2ajE5OThAZ21haWwuY29tIiwic3ViIjoidmlqYXlhbmFuZHZqMTk5OEBnbWFpbC5jb20iLCJpYXQiOjE3NTI5Mjk0NjgsImV4cCI6MTc1Mjk2NTQ2OH0.qMvoYaRJiuTfIJZK59Brra8pU5hCuoJ1jMndYRq820Q,3,2025-07-20 06:55:24.0
-2,UserContollerApi,FETCH_USERS,Fetched user list,Count,6,4,2025-07-20 06:58:30.0
-3,UserContollerApi,CREATE_USER,User created,FirstName,Vijay Anand,2,2025-07-20 06:57:15.0
-4,UserContollerApi,DELETE_USER,User deleted,ID,12,1,2025-07-20 06:58:30.0
+2,UserContollerApi,FETCH_USERS,Fetched user list,Count,6,13,2025-07-20 12:58:30.0
+3,UserContollerApi,CREATE_USER,User created,FirstName,Vijay Anand,3,2025-07-20 12:55:28.0
+4,UserContollerApi,DELETE_USER,User deleted,ID,12,2,2025-07-20 12:56:42.0
+5,UserContollerApi,UPDATE_USER_FAIL,User not found,ID,1,2,2025-07-20 12:53:00.0
+6,JwtUtil,JWT_INVALID,JWT strings must contain exactly 2 period characters. Found: 0,token,bXlzZWN1cmVsb25nc2VjcmV0a2V5Zm9yand0dG9rZW52YWxpZGF0aW9uMTIzNDU2,2,2025-07-20 12:57:14.0
+7,UserContollerApi,UPDATE_USER,User updated,ID,18,1,2025-07-20 12:56:17.0
+8,ImageController,FETCH_ALL_IMAGES,Fetched all images,Count,6,1,2025-07-20 13:02:58.0
+9,NoteController,FETCH_NOTES,Fetched all notes,Count,4,2,2025-07-20 13:03:48.0
+10,NoteController,SAVE_NOTE,Saved or updated note,ID,11,1,2025-07-20 13:03:42.0
