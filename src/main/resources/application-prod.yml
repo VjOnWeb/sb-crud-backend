@@ -11,6 +11,17 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  mail: # Added for SMTP mail configuration
+    host: smtp.gmail.com
+    port: 587
+    username: ${MY_EMAIL} # Use environment variable for production
+    password: ${APP_PASSWORD} # Use environment variable for production
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: 9899
