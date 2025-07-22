@@ -26,8 +26,8 @@ import com.vijay.crudApi.models.RegisterRequest;
 import com.vijay.crudApi.utils.JwtUtil;
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin("http://localhost:3838")
-
+//@CrossOrigin("http://localhost:3838")
+@CrossOrigin(origins = "${cors.allowed-origin}")
 public class AuthController {
 
     @Autowired private AuthenticationManager authenticationManager;

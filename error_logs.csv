@@ -1,5 +1,5 @@
 ID,ClassName,ErrorCode,ErrorMessage,AffectedKey,AffectedValue,OccurrenceCount,CreatedAt
-1,JwtUtil,JWT_EXPIRED,JWT expired at 2025-07-19T22:51:08Z. Current time: 2025-07-20T01:23:55Z  a difference of 9167963 milliseconds.  Allowed clock skew: 0 milliseconds.,token,eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6InZpamF5YW5hbmR2ajE5OThAZ21haWwuY29tIiwic3ViIjoidmlqYXlhbmFuZHZqMTk5OEBnbWFpbC5jb20iLCJpYXQiOjE3NTI5Mjk0NjgsImV4cCI6MTc1Mjk2NTQ2OH0.qMvoYaRJiuTfIJZK59Brra8pU5hCuoJ1jMndYRq820Q,6,2025-07-20 23:29:56.0
-2,UserContollerApi,FETCH_USERS,Fetched user list,Count,6,17,2025-07-20 23:30:53.0
-8,ImageController,FETCH_ALL_IMAGES,Fetched all images,Count,6,2,2025-07-20 23:31:13.0
-9,NoteController,FETCH_NOTES,Fetched all notes,Count,4,6,2025-07-20 23:31:02.0
+1,UserContollerApi,FETCH_USERS,Fetched user list,Count,8,6,2025-07-22 19:57:47.0
+2,JwtUtil,JWT_EXPIRED,JWT expired at 2025-07-21T22:27:22Z. Current time: 2025-07-22T13:57:10Z  a difference of 55788996 milliseconds.  Allowed clock skew: 0 milliseconds.,token,eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VybmFtZSI6InZpamF5YW5hbmR2ajE5OThAZ21haWwuY29tIiwic3ViIjoidmlqYXlhbmFuZHZqMTk5OEBnbWFpbC5jb20iLCJpYXQiOjE3NTMxMDA4NDIsImV4cCI6MTc1MzEzNjg0Mn0.Qvk0YrHZJ42JAsdsEoNsqqkcFeBi9D2DAzGDLd1GzHE,1,2025-07-22 19:27:11.0
+3,AuthController,GENERIC_ERR,Cannot invoke "org.springframework.security.core.Authentication.getName()" because "authentication" is null,URL,/api/auth/me,2,2025-07-22 19:42:11.0
+4,UserContollerApi,CREATE_USER,User created,FirstName,New,1,2025-07-22 19:57:47.0

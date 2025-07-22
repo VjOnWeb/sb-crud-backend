@@ -15,7 +15,8 @@ import com.vijay.crudApi.Repo.userRepo;
 import com.vijay.crudApi.models.userRest;
 
 @RestController
-@CrossOrigin("http://localhost:3838")
+//@CrossOrigin("http://localhost:3838")
+@CrossOrigin(origins = "${cors.allowed-origin}")
 public class UserContollerApi {
 
     private static final Logger log = LoggerFactory.getLogger(UserContollerApi.class);

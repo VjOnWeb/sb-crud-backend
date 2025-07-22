@@ -34,6 +34,7 @@ public class LogMailScheduler {
 
     // Runs every 6 hours
     @Scheduled(fixedRate =  6 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 5 * 60 * 1000)
     public void sendErrorLogs() throws MessagingException, IOException {
     	Instant sixHoursAgo = Instant.now().minus(6, ChronoUnit.HOURS);
     	Timestamp timestamp = Timestamp.from(sixHoursAgo); // ✅ Convert to Timestamp

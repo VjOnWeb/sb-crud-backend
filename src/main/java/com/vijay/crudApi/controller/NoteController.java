@@ -15,7 +15,9 @@ import com.vijay.crudApi.service.NoteService;
 import com.vijay.crudApi.Repo.ErrorLogService;
 
 @RestController
-@CrossOrigin("http://localhost:3838")
+//@CrossOrigin("http://localhost:3838")
+@CrossOrigin(origins = "${cors.allowed-origin}")
+
 public class NoteController {
 
     private static final Logger log = LoggerFactory.getLogger(NoteController.class);
