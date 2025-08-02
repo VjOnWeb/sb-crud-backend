@@ -24,6 +24,7 @@ import com.vijay.crudApi.models.ImagesDTO;
 
 @RestController
 //@CrossOrigin("http://localhost:3838")
+// Test
 @CrossOrigin(origins = "${cors.allowed-origin}")
 @RequestMapping("/api/images")
 public class ImageController {
