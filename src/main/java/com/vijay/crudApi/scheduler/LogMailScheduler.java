@@ -30,9 +30,9 @@ public class LogMailScheduler {
     @Autowired
     private ErrorLogRepository errorLogRepository;
 
-    private final Dotenv dotenv = Dotenv.load(); // .env loader
+    private final Dotenv dotenv = Dotenv.load(); //  .env loader
 
-    // Runs every 6 hours
+    // Runs every 6  hours
     @Scheduled(fixedRate =  6 * 60 * 60 * 1000)
 //    @Scheduled(fixedRate = 5 * 60 * 1000)
     public void sendErrorLogs() throws MessagingException, IOException {
